@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ClockView</title>
+    <link href="jquery-ui-1.11.4.custom/jquery-ui.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet" type="text/css">
+    <script src="jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+    <script src="jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+    <script src="d3-master/d3.min.js"></script>
+
+</head>
+<body>
+    <div class="left">
+        <div class="information"></div>
+        <div class="subnet"></div>
+        <div class="legend"></div>
+    </div>
+    <div class="mid">
+        <div class="main">
+            <ul>
+                <li><a href="#tabs-1">Database</a></li>
+                <li><a href="#tabs-2">Network Overview</a></li>
+                <li><a href="#tabs-3">External Hosts</a></li>
+                <li><a href="#tabs-4">Host Overview</a></li>
+            </ul>
+            <div id="tabs-1">
+                <table class="database" border="1">
+                    <tr>
+                        <td>date</td>
+                        <td>time</td>
+                        <td>srcIP</td>
+                        <td>distIP</td>
+                        <td>port</td>
+                        <td>flow</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tabs-2"><svg class="overview"></svg></div>
+            <div id="tabs-3">hahahaha</div>
+            <div id="tabs-4">hahahahaha</div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="option"></div>
+        <div class="filter"></div>
+        <div class="pattern"></div>
+    </div>
+    <script src="src/option.js"></script>
+    <script src="src/legend.js"></script>
+    <script src="src/information.js"></script>
+    <script src="src/filter.js"></script>
+    <script src="src/main.js"></script>
+    <script src="Clockview.js"></script>
+</body>
+</html>

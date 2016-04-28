@@ -1,0 +1,74 @@
+.left{
+    height: 750px;;
+    width:15%;
+    float:left;
+}
+.information{
+    height:200px;
+    width:98%;
+    margin: 10px auto;
+}
+.subnet{
+    height:200px;
+    width:98%;
+    margin: 10px auto;
+}
+.legend{
+    height:350px;
+    width:98%;
+    margin: 10px auto;
+}
+.mid{
+    height: 750px;
+    width:70%;
+    float: left;
+}
+.main{
+    height:730px;
+    margin: 1px 1px 1px 1px;
+}
+.right{
+    height: 750px;
+    width:15%;
+    float: right;
+}
+.option{
+    height:200px;
+    width:98%;
+    margin: 10px auto;
+}
+.filter{
+    height:200px;
+    width:98%;
+    margin: 10px auto;
+}
+.pattern{
+    height:300px;
+    width:98%;
+    margin: 10px auto;
+}
+.legend_fieldset{
+    padding:1px;
+}
+.option_fieldset{
+    padding:1px;
+}
+.filter_fieldset{
+    padding:1px;
+}
+.option_text{
+    font-family: Courier New, serif;
+    font-size:20px;
+}
+
+.flegend{
+    font-family: Courier New, serif;
+    font-size:20px;
+}
+body{
+    font: 62.5% "Trebuchet MS", sans-serif;
+}
+.database{
+    font-family: Courier New, serif;
+    font-size:20px;
+}
