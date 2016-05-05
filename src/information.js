@@ -83,5 +83,19 @@ function change_type(n){
         traffic_type.text("Traffic:Incoming+Outgoing");
 }
 function info_show(data){
+    var a;
+    if(data["IP1"]){
+        a=data["IP1"];
+        if(a["IP"]) IP1["IP"].text("IP 1: "+a["IP"]);
+        if(a["hostname"]) IP1["hostname"].text("HostName: "+a["hostname"]);
+        if(a["country"]) IP1["country"].text("Country: "+a["country"]);
+        if(a["connected1"]) IP1["connected1"].text("Connected to "+a["connected1"]+" hosts");
+        if(a["connected2"]) IP1["connected2"].text("("+a["connected2"]+" outgoing)");
+    }
+    if(data["IP2"]){
 
+    }
+    if(data["traffic"]){
+        change_type(data["traffic"]);
+    }
 }

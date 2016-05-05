@@ -13,5 +13,6 @@ d3.csv("data.csv",function(error,data){
     }
     //console.log(data);
     var show_data = filter_data(data);
+    //console.log(show_data);
     main_init(show_data);
 });
