@@ -11,7 +11,7 @@ function main_init(show_data){
 		.attr("width",1000).attr("height",650)
 		.attr("fill","#4F4F4F");
 	var zoom = d3.behavior.zoom()
-		.scaleExtent([1, 10])
+		.scaleExtent([0.1, 10])
 		.on("zoom", zoomed);
 	function zoomed() {
 		svgg.attr("transform",

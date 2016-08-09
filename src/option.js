@@ -19,7 +19,8 @@ function option_init(divclass){
         .attr("class","option_text");
     d3.select(".option_fieldset")
         .append("select")
-        .attr("class","order");
+        .attr("class","order")
+        .on("change",order_change);
     var order = ["day","week","month"];
     d3.select(".order")
         .selectAll("option")
@@ -54,7 +55,8 @@ function option_init(divclass){
         .attr("class","option_text");
     d3.select(".option_fieldset")
         .append("select")
-        .attr("class","DT");
+        .attr("class","DT")
+        .on("change",data_type_change);
     var DT = ["absolute","%"];
     d3.select(".DT")
         .selectAll("option")
@@ -76,4 +78,14 @@ function InternalGraph_change(){
 
 function get_option(){
     return [o_order,o_internal,o_type];
+}
+
+function data_type_change(){
+    var selectedValue = d3.event.target.value;
+    console.log(selectedValue);
+}
+
+function order_change(){
+    var selectedValue = d3.event.target.value;
+    console.log(selectedValue);
 }

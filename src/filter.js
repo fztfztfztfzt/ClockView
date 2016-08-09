@@ -24,7 +24,8 @@ function filter_init(divclass){
         .text("Traffic Type:");
     d3.select(".filter_fieldset1")
         .append("select")
-        .attr("class","traffic_type_select");
+        .attr("class","traffic_type_select")
+        .on("change",traffic_type_change);
     var TT = ["Both","incoming","outgoing"];
     d3.select(".traffic_type_select")
         .selectAll("option")
@@ -40,7 +41,8 @@ function filter_init(divclass){
         .text("Protocol:");
     d3.select(".filter_fieldset1")
         .append("select")
-        .attr("class","protocol_select");
+        .attr("class","protocol_select")
+        .on("change",protocol_change);
     var PS = ["All","TCP","UDP"];
     d3.select(".protocol_select")
         .selectAll("option")
@@ -65,3 +67,14 @@ function filter_init(divclass){
 
     //d3.select(".flow_slider").slider();
 }
+
+function traffic_type_change(){
+    var selectedValue = d3.event.target.value;
+    console.log(selectedValue);
+}
+function protocol_change(){
+    var selectedValue = d3.event.target.value;
+    console.log(selectedValue);
+}
+
+
