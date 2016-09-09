@@ -13,7 +13,6 @@
 <body>
     <div class="left">
         <div class="information"></div>
-        <div class="subnet"></div>
         <div class="legend"></div>
     </div>
     <div class="mid">
@@ -21,8 +20,8 @@
             <ul>
                 <li><a href="#tabs-1">Database</a></li>
                 <li><a href="#tabs-2">Network Overview</a></li>
-                <li><a href="#tabs-3">External Hosts</a></li>
-                <li><a href="#tabs-4">Host Overview</a></li>
+                <li><a href="#tabs-3">Host Overview</a></li>
+                <!--<li><a href="#tabs-4">Reserve</a></li>-->
             </ul>
             <div id="tabs-1">
                 <table class="database" border="1">
@@ -32,19 +31,23 @@
                         <td>srcIP</td>
                         <td>distIP</td>
                         <td>port</td>
+                        <td>protocol</td>
                         <td>flow</td>
+                        <td>data</td>
                     </tr>
                 </table>
             </div>
             <div id="tabs-2"><svg class="overview"></svg></div>
-            <div id="tabs-3">hahahaha</div>
-            <div id="tabs-4">hahahahaha</div>
+            <div id="tabs-3">
+                <div><button id="HostButton">update</button></div>
+                <svg class="HostOverview"></svg>
+            </div>
+            <!--<div id="tabs-4">hahahahaha</div>-->
         </div>
     </div>
     <div class="right">
         <div class="option"></div>
         <div class="filter"></div>
-        <div class="pattern"></div>
     </div>
     <script src="src/option.js"></script>
     <script src="src/legend.js"></script>

@@ -1,7 +1,7 @@
 /**
  * Created by Polaris on 2016/3/30.
  */
-
+var filter = ['','2016-4-1','',''];
 function filter_init(divclass){
     var $div = $("div");
     $div = $div.find("."+divclass);
@@ -11,29 +11,6 @@ function filter_init(divclass){
         .append("legend")
         .attr("class","flegend")
         .text("Global Filter");
-    d3.select("div."+divclass)
-        .append("fieldset")
-        .attr("class","filter_fieldset2")
-        .append("legend")
-        .attr("class","flegend")
-        .text("Global Port Filter");
-
-    d3.select(".filter_fieldset1")
-        .append("text")
-        .attr("class","traffic_type")
-        .text("Traffic Type:");
-    d3.select(".filter_fieldset1")
-        .append("select")
-        .attr("class","traffic_type_select")
-        .on("change",traffic_type_change);
-    var TT = ["Both","incoming","outgoing"];
-    d3.select(".traffic_type_select")
-        .selectAll("option")
-        .data(TT)
-        .enter()
-        .append("option")
-        .text(function(d){return d;})
-        .attr("value",function(d,i){return i;});
 
     d3.select(".filter_fieldset1")
         .append("text")
@@ -51,30 +28,45 @@ function filter_init(divclass){
         .append("option")
         .text(function(d){return d;})
         .attr("value",function(d,i){return i;});
-
-    d3.select(".filter_fieldset1")
-        .append("text")
-        .attr("class","flow_slider_text")
-        .text("Flow:  0--10000");
-    d3.select(".filter_fieldset1")
-        .append("div")
-        .attr("class","flow_slider");
-    $(".flow_slider").slider({
-        range:true,
-        max:10000,
-        values:[0,10000]
-    });
-
-    //d3.select(".flow_slider").slider();
+	d3.select(".filter_fieldset1")
+		.append('div')
+		.attr("id",'datepicker');
+	$( "#datepicker" ).datepicker({
+		inline: false,
+		defaultDate: '04/01/2016',
+		onSelect: function(dateText, inst){
+			a = dateText.split('/');
+			year = a[2];
+			month = parseInt(a[0]);
+			day = parseInt(a[1]);
+			temp = year+'-'+month+'-'+day;
+			filter[1] = temp;
+			temp = '?date='+filter[1]+'&protocol='+filter[0]+'&IP1='+filter[2]+'&IP2='+filter[3];
+			d3.csv("http://127.0.0.1:5000/data"+temp,function(data){
+				temp = "?traffic_type="+option[0]+'&data_type='+option[1]+'&flowFrom='+option[2]+'&flowTo='+option[3];
+				d3.json("http://127.0.0.1:5000/view1_matrix"+temp,function(view1_data){
+					view1_update(view1_data);
+				});
+			});
+		}
+	});
 }
 
-function traffic_type_change(){
-    var selectedValue = d3.event.target.value;
-    console.log(selectedValue);
-}
+
 function protocol_change(){
     var selectedValue = d3.event.target.value;
-    console.log(selectedValue);
+    temp = ['','TCP','UDP'];
+	filter[0] = temp[selectedValue];
+	aaaa = [];
+	aaaa["Protocol"] = filter[0];
+	info_show(aaaa);
+    temp = '?date='+filter[1]+'&protocol='+filter[0]+'&IP1='+filter[2]+'&IP2='+filter[3];
+    d3.csv("http://127.0.0.1:5000/data"+temp,function(data){
+	    temp = "?traffic_type="+option[0]+'&data_type='+option[1]+'&flowFrom='+option[2]+'&flowTo='+option[3];
+	    d3.json("http://127.0.0.1:5000/view1_matrix"+temp,function(view1_data){
+		    view1_update(view1_data);
+	    });
+    });
 }
 
 

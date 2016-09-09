@@ -1,8 +1,14 @@
 /**
  * Created by Polaris on 2016/4/14.
  */
-function main_init(show_data){
+var svgg,ddd,svg2;
+var R=8;
+var R2 = 38;
+var arc=d3.svg.arc().innerRadius(0).outerRadius(R);
+var arc2=d3.svg.arc().innerRadius(0).outerRadius(R2);
+function main_init(view1_data){
 	//console.log(show_data);
+	show_data = view1_data['matrix'];
 	var svg=d3.select(".overview");
 	svg.attr("width",1000)
 		.attr("height",650);
@@ -17,11 +23,11 @@ function main_init(show_data){
 		svgg.attr("transform",
 			"translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 	}
-	var svgg=svg.append("g").call(zoom);
+	svgg=svg.append("g").call(zoom);
 
-	var R=8;
+
 	var pie=d3.layout.pie();
-	var arc=d3.svg.arc().innerRadius(0).outerRadius(R);
+
 	var dataset = [];
 	for(var i=0;i<24;i++){
 		dataset.push(1);
@@ -45,45 +51,51 @@ function main_init(show_data){
 			.attr("stroke-width",1);
 	}
 	for(var x=0;x<64;x++){
-		for(var y=0;y<64;y++){
-			if(show_data[0][x+'.'+y]){
+		for(var y = 0; y<64; y++){
+			if(show_data[x+'.'+y]){
 				var arcs_g = svgg.append("g")
-					.attr("class",'L'+x+'L'+y)
+					.classed('L'+x+'L'+y,true)
 					.on("click", function(){
 						var L = d3.select(this).attr("class").split("L");
 						x = L[1];
 						y = L[2];
-						d3.selectAll(".link").attr("stroke","rgba(255,255,255,0.2)");
+						d3.selectAll(".link").attr("stroke", "rgba(255,255,255,0.2)");
 						d3.selectAll(".link"+x+'_'+y)
-							.attr("stroke","blue");
+							.attr("stroke", "blue");
 						var data = [];
-						data["IP1"]=[];
+						data["IP1"] = [];
 						data["IP1"]["IP"] = "202.120."+x+"."+y;
-						data["IP1"]["country"]="China";
 						info_show(data);
-
 					});
-				var arcs=arcs_g.selectAll(".x"+x+"y"+y+"time")
-					.data(pie(dataset))
-					.enter()
-					.append('g')
-					.attr("transform","translate("+(R+x*20)+","+(R+y*20)+")");
-				arcs.append("path")
-					.attr("fill", function(d,i){
-						if(show_data[0][x+'.'+y][i]==0) return "rgba(0,0,0,0)";
-						else return getColor(+show_data[0][x+'.'+y][i]);
-					})
-					.attr("d",function(d,i){
-						return arc(d);
-					})
+				arcs_g.append("title").text("202.120."+x+'.'+y);
+				ddd = pie(dataset);
+				for(var t=0;t<24;t++){
+					if(show_data[x+'.'+y][t]!=0){
+						arcs_g.append('g')
+							.attr("transform", "translate("+(R+x*20)+","+(R+y*20)+")")
+							.attr("class",function(){
+								return "matrix_"+x+'_'+y+'_'+t;
+							})
+							.append("path")
+							.attr("fill", function(){
+								if(show_data[x+'.'+y][t]==0) return "rgba(0,0,0,0)";
+								else return getColor(+show_data[x+'.'+y][t]);
+							})
+							.attr("d", function(){
+								return arc(ddd[t]);
+							});
+					}
+				}
 			}
 		}
 	}
+	show_data = view1_data['line'];
 	for(var x=0;x<64;x++){
 		for(var y=0;y<64;y++){
-			if(show_data[1]["outgoing"][x+'.'+y]){
-				for(var i in show_data[1]["outgoing"][x+'.'+y]){
-					var dip =i.split(".");
+			if(show_data[x+'.'+y]){
+				a = show_data[x+'.'+y].split('|');
+				for(var i in a){
+					var dip =a[i].split(".");
 					svgg.append("line")
 						.attr("x1",20*x+R)
 						.attr("x2",20*dip[0]+R)
@@ -93,117 +105,132 @@ function main_init(show_data){
 						.attr("stroke-width",1)
 						.attr("class","link")
 						.classed("link"+x+'_'+y,true)
-						.classed("link"+dip[0]+'_'+dip[1],true);
+						.classed("link"+dip[0]+'_'+dip[1],true)
+						.classed("view1_link",true);
 				}
 			}
 		}
 	}
+	svg2=d3.select(".HostOverview");
+	svg2.attr("width",1000)
+		.attr("height",650);
+	$("#HostButton" ).button().click(function(){
+		IP = IP1["IP"].text().split(' ')[2];
+		d3.json("http://127.0.0.1:5000/view2_matrix?IP="+IP,function(view2_data){
+			view2_update(view2_data);
+		});
+	});
+	for(var x=0;x<8;x++){
+		svg2.append("line")
+			.attr("x1",80*x)
+			.attr("x2",80*x)
+			.attr("y1",0)
+			.attr("y2",560)
+			.attr("stroke","grey")
+			.attr("stroke-width",1);
+	}
+	for(var x=0;x<8;x++){
+		svg2.append("line")
+			.attr("x1",0)
+			.attr("x2",560)
+			.attr("y1",x*80)
+			.attr("y2",x*80)
+			.attr("stroke","grey")
+			.attr("stroke-width",1);
+	}
+}
+
+function view1_update(view1_data){
+	t = d3.selectAll('.view1_link');
+	t.remove();
+	show_data = view1_data['line'];
+	for(var x=0;x<64;x++){
+		for(var y=0;y<64;y++){
+			if(show_data[x+'.'+y]){
+				a = show_data[x+'.'+y].split('|');
+				for(var i in a){
+					var dip =a[i].split(".");
+					svgg.append("line")
+						.attr("x1",20*x+R)
+						.attr("x2",20*dip[0]+R)
+						.attr("y1",20*y+R)
+						.attr("y2",20*dip[1]+R)
+						.attr("stroke","rgba(255,255,255,0.2)")
+						.attr("stroke-width",1)
+						.attr("class","link")
+						.classed("link"+x+'_'+y,true)
+						.classed("link"+dip[0]+'_'+dip[1],true)
+						.classed("view1_link",true);
+				}
+			}
+		}
+	}
+	var link = d3.selectAll(".link");
+	link.style("opacity",1-o_internal);
+	show_data = view1_data['matrix'];
+	//console.log(show_data)
+	for(var x=0;x<64;x++){
+		for(var y = 0; y<64; y++){
+			if(show_data[x+'.'+y]){
+				var arcs_g = svgg.select('.L'+x+'L'+y);
+				//console.log(arcs_g)
+				for(var t=0;t<24;t++){
+					arcs_g.select(".matrix_"+x+'_'+y+'_'+t).remove();
+					if(show_data[x+'.'+y][t]!=0){
+						//console.log(1);
+						arcs_g.append('g')
+							.attr("transform", "translate("+(R+x*20)+","+(R+y*20)+")")
+							.attr("class",function(){
+								return "matrix_"+x+'_'+y+'_'+t;
+							})
+							.append("path")
+							.attr("fill", function(){
+								if(show_data[x+'.'+y][t]==0) return "rgba(0,0,0,0)";
+								else return getColor(+show_data[x+'.'+y][t]);
+							})
+							.attr("d", function(){
+								return arc(ddd[t]);
+							});
+					}
+				}
+			}
+		}
+	}
+
+	console.log('ok');
 
 }
 
-function filter_data(data){
-	var temp=[];
-	var temp2=[];
-	temp2["outgoing"]=[];
-	temp2["incoming"]=[];
-	var day = 1;
-	for(var i in data){
-		if(data[i]["date"]=="2016-4-"+day.toString()){
-			var sip=data[i]["srcIP"].split(".");
-			var dip=data[i]["distIP"].split(".");
-			var time=data[i]["time"].split(":");
-			var flow=+data[i]["flow"];
-			if(sip[0]=="202"&&sip[1]=="120"){
-				var ip=sip[2]+'.'+sip[3];
-				if(temp[ip]){
-					temp[ip][+time[0]]+=flow;
-				}else{
-					temp[ip]=[];
-					for(var i=0;i<24;i++){
-						temp[ip].push(0);
-					}
-					temp[ip][+time[0]]+=flow;
-				}
-				if(dip[0]=="202"&&dip[1]=="120"){
-					var ip2=dip[2]+'.'+dip[3];
-					if(temp2["outgoing"][ip]){
-						if(temp2["outgoing"][ip][ip2]){
-							temp2["outgoing"][ip][ip2]+=1;
-						}else{
-							temp2["outgoing"][ip][ip2]=1;
-						}
-					}
-					else{
-						temp2["outgoing"][ip]=[];
-						temp2["outgoing"][ip][ip2]=1;
-					}
-					if(temp2["incoming"][ip2]){
-						if(temp2["incoming"][ip2][ip]){
-							temp2["incoming"][ip2][ip] += 1;
-						}else{
-							temp2["incoming"][ip2][ip] = 1;
-						}
-					}
-					else{
-						temp2["incoming"][ip2]=[];
-						temp2["incoming"][ip2][ip]=1;
-					}
-				}
 
-			}
-			if(dip[0]=="202"&&dip[1]=="120"){
-				var ip=dip[2]+'.'+dip[3];
-				if(temp[ip]){
-					temp[ip][+time[0]]+=flow;
-				}else{
-					temp[ip]=[];
-					for(var i=0;i<24;i++){
-						temp[ip].push(0);
-					}
-					temp[ip][+time[0]]+=flow;
+function view2_update(view2_data){
+	//console.log(view2_data);
+	aaaa = [];
+	aaaa["connected1"] = view2_data["Host"];
+	aaaa["connected2"] = view2_data["Outgoing"];
+	info_show(aaaa);
+	view2_data = view2_data["data"];
+	for(var x=1;x<32;x++){
+		if(view2_data['2016-4-'+x]){
+			d3.select(".view2_"+x).remove();
+			var arcs_g = svg2.append("g")
+				.classed("view2_"+x, true);
+			arcs_g.append("title").text("2016-4-"+x);
+			for(var t = 0; t<24; t++){
+				if(view2_data['2016-4-'+x][t]!=0){
+					arcs_g.append('g')
+						.attr("transform", "translate("+(R2+(Math.round((x-1)%7))*80)+","+(R2+parseInt((x-1)/7)*80)+")")
+						.attr("class", function(){
+							return "view2_matrix_"+t;
+						})
+						.append("path")
+						.attr("fill", function(){
+							return getColor(+view2_data["2016-4-"+x][t]);
+						})
+						.attr("d", function(){
+							return arc2(ddd[t]);
+						});
 				}
 			}
 		}
 	}
-	//console.log(temp2);
-	return [temp,temp2];
-}
-
-function filter_data2(data){
-	var temp=[];
-	var day = 1;
-	for(var i in data){
-		if(data[i]["date"]=="2016-4-"+day.toString()){
-			var sip=data[i]["srcIP"].split(".");
-			var dip=data[i]["distIP"].split(".");
-			var time=data[i]["time"].split(":");
-			var flow=+data[i]["flow"];
-			if(sip[0]=="202"&&sip[1]=="120"){
-				var ip=sip[2]+'.'+sip[3];
-				if(temp[ip]){
-					temp[ip][+time[0]]+=flow;
-				}else{
-					temp[ip]=[];
-					for(var i=0;i<24;i++){
-						temp[ip].push(0);
-					}
-					temp[ip][+time[0]]+=flow;
-				}
-			}
-			if(dip[0]=="202"&&dip[1]=="120"){
-				var ip=dip[2]+'.'+dip[3];
-				if(temp[ip]){
-					temp[ip][+time[0]]+=flow;
-				}else{
-					temp[ip]=[];
-					for(var i=0;i<24;i++){
-						temp[ip].push(0);
-					}
-					temp[ip][+time[0]]+=flow;
-				}
-			}
-		}
-	}
-	//console.log(temp);
-	return temp;
 }

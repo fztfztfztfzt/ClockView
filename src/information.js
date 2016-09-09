@@ -19,18 +19,6 @@ function info_init(divclass){
         .attr('y',10)
         .attr("font-family", "Courier New")
         .attr("font-size", "15px");
-    IP1["hostname"] = info_svg.append("text")
-        .text("HostName:")
-        .attr('x',10)
-        .attr('y',30)
-        .attr("font-family", "Courier New")
-        .attr("font-size", "15px");
-    IP1["country"] = info_svg.append("text")
-        .text("Country:")
-        .attr('x',10)
-        .attr('y',50)
-        .attr("font-family", "Courier New")
-        .attr("font-size", "15px");
     IP1["connected1"] = info_svg.append("text")
         .text("Connected to -- hosts")
         .attr('x',10)
@@ -43,6 +31,7 @@ function info_init(divclass){
         .attr('y',90)
         .attr("font-family", "Courier New")
         .attr("font-size", "15px");
+    /*
     IP2["IP"] = info_svg.append("text")
         .text("Ip 2:")
         .attr("x",0)
@@ -60,7 +49,7 @@ function info_init(divclass){
         .attr("x",0)
         .attr("y",150)
         .attr("font-family", "Courier New")
-        .attr("font-size", "15px");
+        .attr("font-size", "15px");*/
     protocol = info_svg.append("text")
         .text("Protocol:--")
         .attr("x",0)
@@ -76,26 +65,27 @@ function info_init(divclass){
 }
 function change_type(n){
     if(n==0)
-        traffic_type.text("Traffic:Incoming");
-    else if(n==1)
-        traffic_type.text("Traffic:Outgoing");
-    else
         traffic_type.text("Traffic:Incoming+Outgoing");
+    else if(n==1)
+        traffic_type.text("Traffic:Incoming");
+    else
+        traffic_type.text("Traffic:Outgoing");
 }
 function info_show(data){
     var a;
     if(data["IP1"]){
         a=data["IP1"];
         if(a["IP"]) IP1["IP"].text("IP 1: "+a["IP"]);
-        if(a["hostname"]) IP1["hostname"].text("HostName: "+a["hostname"]);
-        if(a["country"]) IP1["country"].text("Country: "+a["country"]);
-        if(a["connected1"]) IP1["connected1"].text("Connected to "+a["connected1"]+" hosts");
-        if(a["connected2"]) IP1["connected2"].text("("+a["connected2"]+" outgoing)");
     }
-    if(data["IP2"]){
+    /*if(data["IP2"]){
 
-    }
+    }*/
+	if(data["connected1"]) IP1["connected1"].text("Connected to "+data["connected1"]+" hosts");
+	if(data["connected2"]) IP1["connected2"].text("("+data["connected2"]+" outgoing)");
     if(data["traffic"]){
         change_type(data["traffic"]);
+    }
+    if(data["Protocol"]){
+	    protocol.text("Protocol:"+data["Protocol"]);
     }
 }
