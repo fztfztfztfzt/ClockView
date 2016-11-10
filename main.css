@@ -8,6 +8,11 @@
     width:98%;
     margin: 10px auto;
 }
+.detail{
+    height:200px;
+    width:98%;
+    margin: 10px auto;
+}
 .legend{
     height:350px;
     width:98%;
@@ -48,6 +53,9 @@
 .option_fieldset{
     padding:1px;
 }
+.detail_fieldset{
+    padding:1px;
+}
 .filter_fieldset{
     padding:1px;
 }
@@ -60,10 +68,19 @@
     font-family: Courier New, serif;
     font-size:20px;
 }
+.fdetail{
+    font-family: Courier New, serif;
+    font-size:20px;
+}
 body{
     font: 62.5% "Trebuchet MS", sans-serif;
 }
 .database{
     font-family: Courier New, serif;
     font-size:20px;
+}
+.detail_svg{
+    width: 98%;
+    height: 175px;
+    background: #4F4F4F;
 }

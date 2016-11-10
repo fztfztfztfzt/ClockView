@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>ClockView</title>
     <link href="jquery-ui-1.11.4.custom/jquery-ui.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
     <link href="main.css" rel="stylesheet" type="text/css">
     <script src="jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
     <script src="jquery-ui-1.11.4.custom/jquery-ui.js"></script>
@@ -13,6 +14,16 @@
 <body>
     <div class="left">
         <div class="information"></div>
+        <div class="detail">
+            <fieldset class="detail_fieldset">
+                <legend class="fdetail">
+                    detail
+                </legend>
+                <svg class="detail_svg">
+
+                </svg>
+            </fieldset>
+        </div>
         <div class="legend"></div>
     </div>
     <div class="mid">
@@ -24,17 +35,19 @@
                 <!--<li><a href="#tabs-4">Reserve</a></li>-->
             </ul>
             <div id="tabs-1">
-                <table class="database" border="1">
-                    <tr>
-                        <td>date</td>
-                        <td>time</td>
-                        <td>srcIP</td>
-                        <td>distIP</td>
-                        <td>port</td>
-                        <td>protocol</td>
-                        <td>flow</td>
-                        <td>data</td>
-                    </tr>
+                <table class="database pure-table" border="1">
+					<thead>
+						<tr>
+							<td>date</td>
+							<td>time</td>
+							<td>srcIP</td>
+							<td>distIP</td>
+							<td>port</td>
+							<td>protocol</td>
+							<td>flow</td>
+							<td>data</td>
+						</tr>
+					</thead>
                 </table>
             </div>
             <div id="tabs-2"><svg class="overview"></svg></div>

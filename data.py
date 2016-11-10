@@ -13,7 +13,7 @@ MMM = 64
 	
 @app.route('/data',methods=['POST', 'GET'])
 def filter_data():
-	date = request.args.get('date', '')
+        date = request.args.get('date', '')
 	IP1 = request.args.get('IP1', '')
 	IP2 = request.args.get('IP2', '')
 	protocol = request.args.get('protocol', '')
@@ -97,6 +97,10 @@ def get_view1_matrix():
 				view1_line[sip34]+=("|"+dip34)
 			else:
 				view1_line[sip34] = dip34
+			if view1_line.has_key(dip34):
+				view1_line[dip34]+=("|"+sip34)
+			else:
+				view1_line[dip34] = sip34
 	if data_type=='percentage':
 		pass
 	if flowFrom!='' and flowTo!='':
@@ -164,13 +168,37 @@ def get_view2_matrix():
 @app.route('/view2_force',methods=['POST', 'GET'])
 def get_view2_force():
 	pass
-"""	
+"""
+@app.route('/daily_data')
+def daily():
+        return Response(json.dumps({}), mimetype='application/json')
+        rrr = {}
+        for i in range(1,32):
+                rrr[str(i)]=0              
+        for i in DATA:
+                if(i[0]=='date'):
+                        continue
+                d = i[0].split('-')[2]
+                rrr[d]+=int(i[6])
+        for i in range(1,32):
+                rrr[str(i)] = int(rrr[str(i)]/24.0)
+        mi = rrr['1']
+        ma = rrr['1']
+        for i in range(1,31):
+                if(rrr[str(i)]<mi):
+                        mi = rrr[str(i)]
+                if(rrr[str(i)]>ma):
+                        ma = rrr[str(i)]
+        for i in range(1,32):
+                rrr[str(i)] = int((rrr[str(i)]-mi)*10000.0/(ma-mi))
+        return Response(json.dumps(rrr), mimetype='application/json')
+
 @app.route('/')
 def index():
-    return 'Index Page'
+        return 'Index Page'
 	
 def Get_Data():
-	reader = csv.reader(open("data.csv"))
+	reader = csv.reader(open("haha2.csv"))
 	for date,time,srcIP,dstIP,port,protocol,flow,data in reader:
 		DATA.append([date,time,srcIP,dstIP,port,protocol,flow,data])	
 	

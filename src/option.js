@@ -2,7 +2,7 @@
  * Created by Polaris on 2016/3/28.
  */
 var option = ['Both','absolute',0,250000];
-var o_internal;
+var o_internal=1;
 function option_init(divclass){
     var $div = $("div");
     $div = $div.find("."+divclass);
@@ -13,10 +13,32 @@ function option_init(divclass){
         .attr("class","flegend")
         .text("Option");
 
+
     d3.select(".option_fieldset")
         .append("text")
         .text("InternalGraph:")
         .attr("class","option_text");
+	var ttt = d3.select(".option_fieldset")
+		.append('form')
+		.attr('style',"margin-bottom: 2em;")
+		.append('div')
+		.attr('id','radioset1')
+		.on('click',InternalGraph_change);
+	ttt.append('input')
+		.attr('type',"radio")
+		.attr('id',"radio1")
+		.attr('name','radio')
+		.attr('value',0);
+	ttt.append('label').attr('for',"radio1").text('Yes');
+	ttt.append('input')
+		.attr('type',"radio")
+		.attr('id',"radio2")
+		.attr('checked','checked')
+		.attr('name','radio')
+		.attr('value',1);
+	ttt.append('label').attr('for',"radio2").text('No');
+	$("#radioset1" ).buttonset();
+	/*
     d3.select(".option_fieldset")
         .append("select")
         .attr("class","IG")
@@ -30,10 +52,39 @@ function option_init(divclass){
         .text(function(d){return d;})
         .attr("value",function(d,i){return i;});
     //$(".IG").selectmenu({width:100});
+    */
+
     d3.select(".option_fieldset")
         .append("text")
-        .attr("class","traffic_type")
+        .attr("class","option_text")
         .text("Traffic Type:");
+	ttt = d3.select(".option_fieldset")
+		.append('form')
+		.attr('style',"margin-bottom: 2em;")
+		.append('div')
+		.attr('id','radioset2')
+		.on("change",data_type_change);
+	ttt.append('input')
+		.attr('type',"radio")
+		.attr('id',"radio21")
+		.attr('checked','checked')
+		.attr('name','radio')
+		.attr('value',0);
+	ttt.append('label').attr('for',"radio21").text('Both');
+	ttt.append('input')
+		.attr('type',"radio")
+		.attr('id',"radio22")
+		.attr('name','radio')
+		.attr('value',1);
+	ttt.append('label').attr('for',"radio22").text('Income');
+	ttt.append('input')
+		.attr('type',"radio")
+		.attr('id',"radio23")
+		.attr('name','radio')
+		.attr('value',2);
+	ttt.append('label').attr('for',"radio23").text('Income');
+	$("#radioset2" ).buttonset();
+	/*
     d3.select(".option_fieldset")
         .append("select")
         .attr("class","traffic_type_select")
@@ -46,6 +97,8 @@ function option_init(divclass){
         .append("option")
         .text(function(d){return d;})
         .attr("value",function(d,i){return i;});
+    */
+
 /*
     d3.select(".option_fieldset")
         .append("text")
@@ -67,7 +120,7 @@ function option_init(divclass){
 
 	d3.select(".option_fieldset")
 		.append("text")
-		.attr("class","flow_slider_text")
+		.attr("class","option_text")
 		.text("Flow:  0--250000");
 	d3.select(".option_fieldset")
 		.append("div")
@@ -95,6 +148,7 @@ function option_init(divclass){
 
 function InternalGraph_change(){
     var selectedValue = d3.event.target.value;
+	//console.log(selectedValue);
     o_internal=selectedValue;
     var link = d3.selectAll(".link");
     link.style("opacity",1-selectedValue);
@@ -102,6 +156,7 @@ function InternalGraph_change(){
 
 function traffic_type_change(){
 	var selectedValue = d3.event.target.value;
+	//console.log(selectedValue);
 	aaaa = [];
 	aaaa["traffic"] = selectedValue;
 	info_show(aaaa);
@@ -115,7 +170,7 @@ function traffic_type_change(){
 
 function data_type_change(){
     var selectedValue = d3.event.target.value;
-    console.log(selectedValue);
+    //console.log(selectedValue);
 	temp  = ['absolute','percentage'];
 	option[0] = temp[selectedValue];
 	temp = "?traffic_type="+option[0]+'&data_type='+option[1]+'&flowFrom='+option[2]+'&flowTo='+option[3];

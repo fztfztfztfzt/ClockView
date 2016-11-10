@@ -14,8 +14,9 @@ function filter_init(divclass){
 
     d3.select(".filter_fieldset1")
         .append("text")
-        .attr("class","protocol_text")
+        .attr("class","option_text")
         .text("Protocol:");
+	/*
     d3.select(".filter_fieldset1")
         .append("select")
         .attr("class","protocol_select")
@@ -28,6 +29,33 @@ function filter_init(divclass){
         .append("option")
         .text(function(d){return d;})
         .attr("value",function(d,i){return i;});
+    */
+	var ttt = d3.select(".filter_fieldset1")
+		.append('form')
+		.attr('style',"margin-bottom: 2em;")
+		.append('div')
+		.attr('id','radioset3')
+		.on('click',protocol_change);
+	ttt.append('input')
+		.attr('type',"radio")
+		.attr('id',"radio31")
+		.attr('checked','checked')
+		.attr('name','radio')
+		.attr('value',0);
+	ttt.append('label').attr('for',"radio31").text('All');
+	ttt.append('input')
+		.attr('type',"radio")
+		.attr('id',"radio32")
+		.attr('name','radio')
+		.attr('value',1);
+	ttt.append('label').attr('for',"radio32").text('TCP');
+	ttt.append('input')
+		.attr('type',"radio")
+		.attr('id',"radio33")
+		.attr('name','radio')
+		.attr('value',2);
+	ttt.append('label').attr('for',"radio33").text('UDP');
+	$("#radioset3" ).buttonset();
 	d3.select(".filter_fieldset1")
 		.append('div')
 		.attr("id",'datepicker');
@@ -46,6 +74,7 @@ function filter_init(divclass){
 				temp = "?traffic_type="+option[0]+'&data_type='+option[1]+'&flowFrom='+option[2]+'&flowTo='+option[3];
 				d3.json("http://127.0.0.1:5000/view1_matrix"+temp,function(view1_data){
 					view1_update(view1_data);
+					show_daily();
 				});
 			});
 		}
